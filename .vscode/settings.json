@@ -1,0 +1,15 @@
+{
+    "python.pythonPath": ".venv/bin/python",
+    "[jinja]": {
+        "editor.tabSize": 4
+    },
+    "[python]": {
+        "editor.tabSize": 4,
+    },
+    "[javascript]": {
+        "editor.tabSize": 2
+    },
+    "[html]": {
+        "editor.tabSize": 4
+    }
+}
