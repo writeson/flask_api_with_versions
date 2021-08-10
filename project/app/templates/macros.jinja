@@ -1,0 +1,142 @@
+{# 
+    handle the flash messages as bootstrap toasts
+#}
+{% macro flask_flash_messages() %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div aria-live="polite" 
+           aria-atomic="true"
+           class="position-relative">
+        <div class="toast-container position-absolute top-0 end-0 p-3"
+             style="z-index: 2000; opacity: 1;">
+          {% for category, message in messages %}
+            {% set category = "white" if category == "message" else category %}
+            {% set text_color = "text-dark" if category in [
+              "warning",
+              "info",
+              "light",
+              "white",
+              ] else "text-white"
+            %}
+            <div class="toast bg-{{category}}" 
+                role="alert" 
+                aria-live="assertive" 
+                aria-atomic="true">
+              <div class="toast-header bg-{{category}} {{text_color}}">
+                {% set toast_title = category if category in [
+                  "success", "danger", "warning", "info"
+                ] else "message" %}
+                <strong class="me-auto">MyBlog: {{toast_title.title()}}</strong>
+                <button type="button" 
+                        class="btn-close" 
+                        data-bs-dismiss="toast" 
+                        aria-label="Close"></button>
+              </div>
+              <div class="toast-body {{text_color}}">
+                {{message}}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  {% endwith %}
+{% endmacro %}
+
+{#
+    This macro builds the nav items for the application navbar
+#}
+{% macro build_nav_item(nav_item) %}
+    {# configure the navigation items to build in the navbar #}
+    {% set nav_items = [
+        {"name": "Home", "link": "home_bp.home"},
+        {"name": "About","link": "home_bp.about"},
+    ]
+    %}
+    {% for nav_item in nav_items %}
+        {% if "dropdown" in nav_item %}
+            <li class="nav-item dropdown">
+            {% if request.endpoint == nav_item["link"] %}
+                <a class="nav-link dropdown-toggle ml-2 active" id="navbarDropdown" role="button" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false" href="#">
+                    {{nav_item["name"]}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledy="navbarDropdown">
+                {% for dropdown_nav_item in nav_item["dropdown"] %}
+                    <li>
+                        <a class="dropdown-item" href="{{url_for(dropdown_nav_item['link'])}}">
+                            {{dropdown_nav_item["name"]}}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <a class="nav-link dropdown-toggle ml-2" id="navbarDropdown" role="button" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false" href="#">
+                    {{nav_item["name"]}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledy="navbarDropdown">
+                {% for dropdown_nav_item in nav_item["dropdown"] %}
+                    <li>
+                        <a class="dropdown-item" href="{{url_for(dropdown_nav_item['link'])}}">
+                            {{dropdown_nav_item["name"]}}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            </li>
+        {% else %}
+            <li class="nav-item">
+            {% if request.endpoint == nav_item["link"] %}
+                <a class="nav-link ml-2 active" aria-current="page" href="{{url_for(nav_item['link'])}}">
+                    {{nav_item["name"]}}
+                </a>
+            {% else %}
+                <a class="nav-link ml-2" href="{{url_for(nav_item['link'])}}">
+                    {{nav_item["name"]}}
+                </a>
+            {% endif %}
+            </li>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{# 
+    This macro outputs any form errors and should be
+    placed under a form control in the html
+#}
+{% macro validation_errors(errors) %}
+    {% if errors %}
+        {% for error in errors %}
+            <div class="text-danger small">{{error}}</div>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{#
+    This macro outputs the HTML code for a Bootstrap modal
+    confirmation dialog that includes a WTForms form.submit 
+    button along with the custom message.
+
+    **NOTE** This has to be within the scope of the <form>..</form>
+    element.
+#}
+{% macro form_confirmation_modal(message) %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ message }}
+                {# Are you sure you wish to update your passwords? #}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                {{form.submit(class="btn btn-primary")}}
+            </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-auto">
+            <div class="card text-dark bg-light border-secondary mt-5">
+                <div class="card-header text-center">
+                    <h1 class="fw-bold">Welcome To Rectangle API</h1>
+                </div>
+                <div class="card-body">
+                    <p class="card-text fs-3">
+                        The Rectangle web application is an example framework to
+                        try out an XML API using Flask_RestFUL
+                    </p>
+                    <p class="card-text fs-3">
+                        Most of this is to try out an API along with
+                        nested Flask Blueprints to see how well they get along
+                        to structure an application.
+                    </p>
+                    <p class="card-text fs-3">
+                        The API begins at /api and follows this list:
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                HTTP POST /api/v1/{int:merchant_id}/payment - XML payload in body
+                            </li>
+                            <li class="list-group-item">
+                                HTTP POST /api/v2/{int:merchant_id}/payment - XML payload in body
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
