@@ -80,7 +80,9 @@ class PaymentProcessorV1(PaymentProcessor):
             )
             # update the merchant and save to the database
             db_session.add(merchant)
-            db_session.commit()               
+            db_session.commit()
+
+        return "success"
 
 
 class PaymentProcessorV2(PaymentProcessor):
@@ -139,6 +141,8 @@ class PaymentProcessorV2(PaymentProcessor):
             # update the merchant and save to the database
             db_session.add(merchant)
             db_session.commit()               
+
+        return "success"
 
 
 class PaymentProcessorFactory(ABC):
