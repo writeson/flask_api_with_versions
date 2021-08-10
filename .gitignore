@@ -157,5 +157,3 @@ dmypy.json
 # keep secrets out of GitHub
 .secrets.*
 
-# keep databases out of GitHub
-*.sqlite3
