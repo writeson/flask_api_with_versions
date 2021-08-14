@@ -15,11 +15,12 @@ git clone <this repository>
 cd <cloned directory>
 pyenv local 3.9.6
 python -m venv .venv
+source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-This will clone the repository into a directory, install a Python virtual environment in that directory, update the `pip` command and install the Python module requirements of the project.
+This will clone the repository into a directory, install a Python virtual environment in that directory, activate that virtual environment update the `pip` command and install the Python module requirements of the project.
 
 # Running the application
 
@@ -31,7 +32,7 @@ This will run the application using the Flask development WSGI server, which wor
 isn't suited for production.
 
 ```console
-cd <where you cloned>/api/project
+cd <where you cloned>/project
 export FLASK_ENV=development
 export FLASK_APP=rectangle.py
 flask run
@@ -45,7 +46,7 @@ This will run the app with the Gunicorn WSGI server,
 which is a good choice for production use (behind a web server like Nginx or Apache). The command below will run 4 workers. There are other options as well to optimize how the app is run.
 
 ```console
-cd <where you cloned>/api/project
+cd <where you cloned>/project
 gunicorn -w 4 "rectangle:create_app()"
 ```
 
@@ -83,7 +84,7 @@ The API supports 2 versions, v1 and v2 and there are two merchants in the databa
 The system includes an initialized SQLite database, rectangle.sqlite. You can erase and rebuild this (with data) by running these commands:
 
 ```console
-cd cd <where you cloned>/api/project
+cd cd <where you cloned>/project
 python init_db.py
 ```
 
